@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-prisma-soft-delete",
-  "version": "0.0.3-development",
+  "version": "0.0.4-development",
   "main": "./dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -28,5 +28,14 @@
     "type": "git",
     "url": "https://github.com/sumancbd/eslint-plugin-prisma-soft-delete"
   },
-  "author": "Suman Sarkar"
+  "author": "Suman Sarkar",
+  "keywords": [
+    "prisma",
+    "eslint",
+    "prism-soft-delete",
+    "soft-delete",
+    "custom-eslint-rule",
+    "typescript",
+    "typescript-eslint"
+  ]
 }
