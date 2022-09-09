@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-prisma-soft-delete",
-  "version": "0.0.1-development",
+  "version": "0.0.2-development",
   "main": "./dist/index.js",
   "license": "MIT",
   "scripts": {
