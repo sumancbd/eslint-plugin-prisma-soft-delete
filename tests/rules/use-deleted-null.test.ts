@@ -5,32 +5,19 @@ const ruleTester: RuleTester = new RuleTester({
     parser: require.resolve('@typescript-eslint/parser')
 });
 
-const validStatements = [
-    `
-    const user = this.prisma.user.findFirst({
-        where: {
-            id: 1,
-            deleted: null
-        },
-    });
-    `
+const valid = [
+    `const user = this.prisma.user.findFirst({ where: { deleted: null, id: 1 }, });`
 ];
 
 const invalid = [
-    `
-    const user = this.prisma.user.findFirst({
-        where: {
-            id: 1,
-        },
-    });
-    `
+    `const user = this.prisma.user.findFirst({ where: { id: 1 }, });`
 ];
 
-const messageId: MessageIds = 'readonlyInjectableRequired';
+const messageId: MessageIds = 'deletedNullFilterRequired';
 
 ruleTester.run(RULE_NAME, rule, {
-    valid: validStatements,
+    valid: valid,
     invalid: [
-        { code: invalid[0], errors: [{ messageId }] },
+        { code: invalid[0], errors: [{ messageId }], output: valid[0] },
     ]
 });

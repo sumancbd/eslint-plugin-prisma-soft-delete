@@ -1,12 +1,12 @@
 export const RULE_NAME = 'use-deleted-null';
-export type MessageIds = 'readonlyInjectableRequired';
+export type MessageIds = 'deletedNullFilterRequired';
 export type Options = [];
 import { ANY_FIND_SELECTOR } from '../utils/selectors'
 import { TSESTree } from '@typescript-eslint/utils';
 import { createEslintRule } from '../utils/create-eslint-rule'
 import { CallExpression } from 'typescript';
 import { Identifier, ObjectExpression, Property } from '@typescript-eslint/types/dist/generated/ast-spec';
-import { RuleContext, } from '@typescript-eslint/utils/dist/ts-eslint';
+import { RuleContext, RuleFix, RuleFixer, } from '@typescript-eslint/utils/dist/ts-eslint';
 
 const useDeletedNull = createEslintRule<Options, MessageIds>({
     name: RULE_NAME,
@@ -18,9 +18,9 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
         },
         schema: [],
         messages: {
-            readonlyInjectableRequired: 'The where property should have deleted:null filter to get records that are not soft-deleted'
+            deletedNullFilterRequired: 'The where property should have deleted:null filter to get records that are not soft-deleted'
         },
-        // fixable: 'code',
+        fixable: 'code',
     },
     defaultOptions: [],
     create: (context: Readonly<RuleContext<MessageIds, Options>>) => {
@@ -42,7 +42,7 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
                         const wherePropertyObj = whereProperty as unknown as Property;
                         const wherePropertyObjValues = wherePropertyObj.value as unknown as ObjectExpression
                         const deletedProperty = wherePropertyObjValues.properties.find(
-                            (prop) => {
+                            (prop, index) => {
                                 const property = prop as unknown as Property;
                                 const key = property.key as unknown as Identifier;
                                 return key.name === 'deleted'
@@ -50,8 +50,20 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
                         )
                         if(!deletedProperty) {
                             context.report({
-                                messageId: 'readonlyInjectableRequired',
+                                messageId: 'deletedNullFilterRequired',
                                 loc: node.loc,
+                                fix: (fixer: RuleFixer) => {
+                                    const identifier = wherePropertyObj
+
+                                    const [startRange, endRange] = identifier.value.range
+                                    
+                                    const newRange: readonly [number, number] = [startRange + 1, endRange];
+                                    
+                                    const fixers: Array<RuleFix> = [
+                                       fixer.insertTextBeforeRange(newRange, ' deleted: null,')
+                                    ];
+                                    return fixers;
+                                 }
                             });
                         }
                     }
