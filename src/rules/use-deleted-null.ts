@@ -13,12 +13,12 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
     meta: {
         type: 'problem',
         docs: {
-            description: 'force to use deleted=null filter',
+            description: 'force to use deletedAt=null filter',
             recommended: 'error'
         },
         schema: [],
         messages: {
-            deletedNullFilterRequired: 'The where property should have deleted:null filter to get records that are not soft-deleted'
+            deletedNullFilterRequired: 'The where property should have deletedAt:null filter to get records that are not soft-deleted'
         },
         fixable: 'code',
     },
@@ -45,7 +45,7 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
                             (prop, index) => {
                                 const property = prop as unknown as Property;
                                 const key = property.key as unknown as Identifier;
-                                return key.name === 'deleted'
+                                return key.name === 'deletedAt'
                             }
                         )
                         if(!deletedProperty) {
@@ -60,7 +60,7 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
                                     const newRange: readonly [number, number] = [startRange + 1, endRange];
                                     
                                     const fixers: Array<RuleFix> = [
-                                       fixer.insertTextBeforeRange(newRange, ' deleted: null,')
+                                       fixer.insertTextBeforeRange(newRange, ' deletedAt: null,')
                                     ];
                                     return fixers;
                                  }
