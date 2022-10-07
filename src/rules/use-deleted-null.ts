@@ -35,7 +35,7 @@ const useDeletedNull = createEslintRule<Options, MessageIds>({
                         (prop) => {
                             const property = prop as unknown as Property;
                             const key = property.key as unknown as Identifier;
-                            return key.name === 'where'
+                            return key?.name === 'where'
                         }
                     )
                     if (whereProperty) {
