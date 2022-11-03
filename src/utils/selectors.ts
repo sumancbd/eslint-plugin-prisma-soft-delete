@@ -4,4 +4,9 @@ export const ANY_FIND_SELECTOR =
    '[name="findMany"], ' +
    '[name="updateMany"], ' +
    '[name="deleteMany"], ' +
-   '[name="findFirstOrThrow"])'
+   '[name="findFirstOrThrow"])';
+
+export const FIND_UNIQUE_SELECTOR =
+   'Identifier:matches(' +
+   '[name="findUnique"], ' +
+   '[name="findUniqueOrThrow"])';
