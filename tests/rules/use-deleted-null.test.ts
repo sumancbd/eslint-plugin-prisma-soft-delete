@@ -6,7 +6,8 @@ const ruleTester: RuleTester = new RuleTester({
 });
 
 const valid = [
-    `const user = this.prisma.user.findFirst({ where: { deleted: null, id: 1 }, });`
+    `const user = this.prisma.user.findFirst({ where: { deleted: null, id: 1 }, });`,
+    `const user = this.prisma.user.findFirst({ where: { deletedAt: null, id: 1 }, });`
 ];
 
 const invalid = [
